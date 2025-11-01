@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cadastro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h2>Criar conta</h2>
+    <form id="cadForm">
+      <input type="text" id="nome" placeholder="Nome completo" required>
+      <input type="tel" id="cadPhone" placeholder="Número WhatsApp (somente números)" required>
+      <input type="password" id="cadPass" placeholder="Senha" required>
+      <button class="btn-green" type="submit">Cadastrar</button>
+    </form>
+
+    <a class="link" href="login.html">Voltar ao login</a>
+    <div id="cadMsg" class="notice"></div>
+  </div>
+
+<script>
+/* Simula cadastro salvando no localStorage (somente protótipo) */
+document.getElementById('cadForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nome = document.getElementById('nome').value.trim();
+  const phone = document.getElementById('cadPhone').value.trim();
+  const pass = document.getElementById('cadPass').value;
+  if(!/^\d{8,15}$/.test(phone)) { alert('Digite apenas números (ex: 5511999999999 ou 81999999999)'); return; }
+  const users = JSON.parse(localStorage.getItem('simUsers') || '[]');
+
+  // se já existe, atualiza senha; caso contrário, adiciona
+  const idx = users.findIndex(u => u.phone === phone);
+  if (idx >= 0) {
+    users[idx].nome = nome;
+    users[idx].pass = pass;
+  } else {
+    users.push({nome, phone, pass});
+  }
+  localStorage.setItem('simUsers', JSON.stringify(users));
+  document.getElementById('cadMsg').innerHTML = '<span class="success">Cadastro salvo localmente! Redirecionando para login...</span>';
+  setTimeout(()=> window.location='login.html', 1100);
+});
+</script>
+</body>
+</html>
