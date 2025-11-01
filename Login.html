@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h2>Entrar</h2>
+    <form id="loginForm">
+      <input type="tel" id="loginPhone" placeholder="Número WhatsApp (somente números)" required>
+      <input type="password" id="loginPass" placeholder="Senha" required>
+      <button class="btn-primary" type="submit">Entrar</button>
+    </form>
+
+    <a class="link" href="cadastro.html">Criar conta</a>
+    <a class="link" href="esqueceu.html">Esqueceu a senha?</a>
+    <div class="footer">Protótipo: login.</div>
+  </div>
+
+<script>
+// Login simulado usando localStorage
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!/^\d{8,15}$/.test(phone)) { alert('Digite apenas números do telefone.'); return; }
+
+  const users = JSON.parse(localStorage.getItem('simUsers') || '[]');
+  const user = users.find(u => u.phone === phone && u.pass === pass);
+  if (user) {
+    alert('Login bem-sucedido. Bem-vindo(a), ' + (user.nome || 'usuário') + '!');
+    // aqui você pode redirecionar para painel fictício
+  } else {
+    alert('Telefone ou senha incorretos.');
+  }
+});
+</script>
+</body>
+</html>
+
